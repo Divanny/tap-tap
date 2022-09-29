@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -12,40 +19,54 @@ export default function App() {
       backgroundColor={backgroundColor}
       onPress={onPress}
       style={styles.appButton}
-      size={size} color="#000"
+      size={size}
+      color="#000"
     />
   );
 
   return (
-    <LinearGradient style={styles.container}  colors={['#151721', '#370055']} start={{ x: 0, y: 0 }} end={{ x: 2, y: 2 }}>
-      <StatusBar barStyle="light-content" backgroundColor={'#151721'}/>
+    <LinearGradient
+      style={styles.container}
+      colors={['#151721', '#370055']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 2, y: 2 }}>
+      <StatusBar barStyle="light-content" backgroundColor={'#151721'} />
       <View style={styles.settingbuttonContainer}>
-          <TouchableOpacity>
-            <Button icon="gear" backgroundColor="#fff" size={30} />
-          </TouchableOpacity>
+        <TouchableOpacity zIndex={1000}>
+          <Button icon="gear" backgroundColor="#fff" size={30} />
+        </TouchableOpacity>
       </View>
-      <Image style={{ width: 400, height: 150, left: -30 }} source={require("./assets/logoTap.png")}/>
-      <View style={styles.scoreContainer}> 
+      <Image
+        style={{ width: 400, height: 150, left: -30, marginTop: 20 }}
+        source={require('./assets/logoTap.png')}
+      />
+      <View style={styles.scoreContainer}>
         <Text style={styles.highScore}>High Score: </Text>
         <Text style={styles.score}>8000</Text>
       </View>
-      <View style={styles.timerContainer}> 
+      <View style={styles.timerContainer}>
         <Text style={styles.timer}>30:00</Text>
         <Text style={styles.timer}>s</Text>
       </View>
-      <View> 
+      <View>
         <TouchableOpacity
-          style={styles.roundButton} onPress={() => {setCount(count + 10)}}>
+          style={styles.roundButton}
+          onPress={() => {
+            setCount(count + 10);
+          }}>
           <Text style={styles.buttonText}>Tap!</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.scoreContainer}> 
+      <View style={styles.scoreContainer}>
         <Text style={styles.actualScore}>Actual Score: </Text>
         <Text style={styles.actualScore}>{count}</Text>
       </View>
-      <View style={styles.buttonContainer}> 
-        <TouchableOpacity onPress={() => {setCount(0)}}>
-          <Button icon="rotate-right" backgroundColor="#fff" size={50}/>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            setCount(0);
+          }}>
+          <Button icon="rotate-right" backgroundColor="#fff" size={50} />
         </TouchableOpacity>
       </View>
     </LinearGradient>
@@ -56,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   settingbuttonContainer: {
     margin: 10,
@@ -67,40 +88,41 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     position: 'absolute',
     right: 20,
-    top: 10
+    top: 35,
+    zIndex: 10,
   },
   scoreContainer: {
     paddingTop: 20,
-    flexDirection: 'row', 
-    justifyContent: 'space-between'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   timerContainer: {
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 1,
     paddingRight: 1,
-    flexDirection: 'row', 
-    justifyContent: 'space-between'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   highScore: {
     fontWeight: 'bold',
     color: 'white',
     padding: 5,
     fontSize: 24,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   score: {
     color: 'white',
     padding: 5,
     fontSize: 24,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   timer: {
     fontWeight: 'bold',
     color: 'white',
     padding: 5,
     fontSize: 36,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
   },
   roundButton: {
     marginTop: 20,
@@ -111,11 +133,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 273,
     backgroundColor: '#E8E8E8',
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   buttonText: {
     fontFamily: 'Poppins-Bold',
     fontSize: 36,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   actualScore: {
     color: 'white',
@@ -124,7 +150,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     fontSize: 16,
     fontFamily: 'Poppins-Bold',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   buttonContainer: {
     margin: 20,
@@ -133,6 +159,6 @@ const styles = StyleSheet.create({
     width: 62,
     height: 62,
     alignItems: 'center',
-    borderRadius: 30
-  }
+    borderRadius: 30,
+  },
 });
