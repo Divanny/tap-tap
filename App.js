@@ -20,7 +20,7 @@ const getRemaining = (time) => {
 
 export default function App() {
   const [count, setCount] = useState(0);
-
+  const [maxScore, setMaxScore] = useState(0);
   const [remainingSecs, setRemainingSecs] = useState(15);
   const [isActive, setIsActive] = useState(0);
   const { mins, secs } = getRemaining(remainingSecs);
@@ -37,6 +37,9 @@ export default function App() {
   const reset = () => {
     setRemainingSecs(15);
     setIsActive(false);
+    if (count > maxScore) {
+      setMaxScore(count);
+    }
   }
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function App() {
       />
       <View style={styles.scoreContainer}>
         <Text style={styles.highScore}>High Score: </Text>
-        <Text style={styles.score}>8000</Text>
+        <Text style={styles.score}>{maxScore}</Text>
       </View>
       <View style={styles.timerContainer}>
         <Text style={styles.timer}>{`${mins}:${secs}`}</Text>
