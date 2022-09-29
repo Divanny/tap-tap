@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,8 +10,47 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 
+const formatNumber = number => `0${number}`.slice(-2);
+
+const getRemaining = (time) => {
+  const mins = Math.floor(time / 60);
+  const secs = time - mins * 60;
+  return { mins: formatNumber(mins), secs: formatNumber(secs) };
+}
+
 export default function App() {
   const [count, setCount] = useState(0);
+
+  const [remainingSecs, setRemainingSecs] = useState(15);
+  const [isActive, setIsActive] = useState(0);
+  const { mins, secs } = getRemaining(remainingSecs);
+
+  const toggle = () => {
+    if (isActive == false) {
+      setIsActive(true);
+    }
+    if (remainingSecs != 0) {
+      setCount(count + 10);
+    }
+  }
+
+  const reset = () => {
+    setRemainingSecs(15);
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive && remainingSecs > 0) {
+      interval = setInterval(() => {
+        setRemainingSecs(remainingSecs => remainingSecs - 1);
+      }, 1000)
+    } else if (!isActive && remainingSecs != 0) {
+      clearInterval(interval)
+    }
+
+    return () => clearInterval(interval);
+  }, [isActive, remainingSecs])
 
   const Button = ({ onPress, icon, backgroundColor, size }) => (
     <Icon
@@ -45,14 +84,14 @@ export default function App() {
         <Text style={styles.score}>8000</Text>
       </View>
       <View style={styles.timerContainer}>
-        <Text style={styles.timer}>30:00</Text>
+        <Text style={styles.timer}>{`${mins}:${secs}`}</Text>
         <Text style={styles.timer}>s</Text>
       </View>
       <View>
         <TouchableOpacity
           style={styles.roundButton}
           onPress={() => {
-            setCount(count + 10);
+            toggle();
           }}>
           <Text style={styles.buttonText}>Tap!</Text>
         </TouchableOpacity>
@@ -65,6 +104,7 @@ export default function App() {
         <TouchableOpacity
           onPress={() => {
             setCount(0);
+            reset();
           }}>
           <Button icon="rotate-right" backgroundColor="#fff" size={50} />
         </TouchableOpacity>
