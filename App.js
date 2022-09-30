@@ -7,8 +7,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+
+import { Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const formatNumber = number => `0${number}`.slice(-2);
 
@@ -19,11 +23,19 @@ const getRemaining = (time) => {
 }
 
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    'Poppins': require('./assets/fonts/Poppins-Regular.otf'),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   const [count, setCount] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [remainingSecs, setRemainingSecs] = useState(15);
   const [isActive, setIsActive] = useState(0);
   const { mins, secs } = getRemaining(remainingSecs);
+  const [visible, setVisible] = useState(false);
 
   const toggle = () => {
     if (isActive == false) {
@@ -33,6 +45,10 @@ export default function App() {
       setCount(count + 10);
     }
   }
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const reset = () => {
     setRemainingSecs(15);
@@ -67,19 +83,16 @@ export default function App() {
   );
 
   return (
-    <LinearGradient
-      style={styles.container}
-      colors={['#151721', '#370055']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 2, y: 2 }}>
+    <LinearGradient style={styles.container} colors={['#151721', '#370055']} start={{ x: 0, y: 0 }} end={{ x: 2, y: 2 }}>
+      <View style={styles.overlay}/>
       <StatusBar barStyle="light-content" backgroundColor={'#151721'} />
-      <View style={styles.settingbuttonContainer}>
-        <TouchableOpacity zIndex={1000}>
-          <Button icon="gear" backgroundColor="#fff" size={30} />
+      <View style={styles.settingbuttonContainer} zIndex={10} >
+        <TouchableOpacity onPress={() => toggleOverlay(true)}>
+          <Button icon="gear" backgroundColor="#fff" size={35}/>
         </TouchableOpacity>
       </View>
       <Image
-        style={{ width: 400, height: 150, left: -30, marginTop: 20 }}
+        style={{ width: 350, height: 100, left: -30, marginTop: 30 }}
         source={require('./assets/logoTap.png')}
       />
       <View style={styles.scoreContainer}>
@@ -112,6 +125,9 @@ export default function App() {
           <Button icon="rotate-right" backgroundColor="#fff" size={50} />
         </TouchableOpacity>
       </View>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.settingsContainer}>
+        <Text style={styles.settingsTitle}>Settings</Text>
+      </Overlay>
     </LinearGradient>
   );
 }
@@ -126,13 +142,13 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 5,
     backgroundColor: 'white',
-    width: 40,
     alignItems: 'center',
     borderRadius: 15,
     position: 'absolute',
     right: 20,
-    top: 35,
+    top: 30,
     zIndex: 10,
+    width: 45,
   },
   scoreContainer: {
     paddingTop: 20,
@@ -152,20 +168,20 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 5,
     fontSize: 24,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
   },
   score: {
     color: 'white',
     padding: 5,
     fontSize: 24,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
   },
   timer: {
     fontWeight: 'bold',
     color: 'white',
     padding: 5,
     fontSize: 36,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
   },
   roundButton: {
     marginTop: 20,
@@ -176,13 +192,16 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 273,
     backgroundColor: '#E8E8E8',
-    shadowColor: '#171717',
-    shadowOffset: {width: -2, height: 4},
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   buttonText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
     fontSize: 36,
     fontWeight: 'bold',
   },
@@ -192,7 +211,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     fontSize: 16,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins',
     fontWeight: 'bold',
   },
   buttonContainer: {
@@ -203,5 +222,16 @@ const styles = StyleSheet.create({
     height: 62,
     alignItems: 'center',
     borderRadius: 30,
+  },
+  settingsContainer: {
+    margin: 10,
+  },
+  settingsTitle: {
+    fontWeight: 'bold',
+    color: 'black',
+    padding: 5,
+    paddingRight: 200,
+    fontSize: 26,
+    fontFamily: 'Poppins',
   },
 });
