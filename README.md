@@ -46,5 +46,5 @@
 </ul><p><code>'`yarn android` -- (`react-native run-android`)'</code></p><ul>
 <li>Run the website in your browser.</li>
 </ul><p><code>'`yarn web` -- (`expo start:web`)'</code></p><h2>Project Status</h2>
-<hr><p>In Progress. Setting screen still on development.</p><h2>Contact</h2>
+<hr><p>In Progress. Split screen mode still on development.</p><h2>Contact</h2>
 <hr><p><span style="margin-right: 30px;"></span><a href="https://github.com/Divanny"><img target="_blank" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" style="width: 10%;"></a></p>
