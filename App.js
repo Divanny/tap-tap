@@ -29,6 +29,7 @@ export default function App() {
   const [isActive, setIsActive] = useState(0);
   const { mins, secs } = getRemaining(remainingSecs);
   const [visible, setVisible] = useState(false);
+  const [splitScreen, setSplitScreen] = useState(false);
 
   const toggle = () => {
     if (isActive == false) {
@@ -37,6 +38,10 @@ export default function App() {
     if (remainingSecs != 0) {
       setCount(count + 10);
     }
+  }
+
+  const toggleMode = () => {
+    setSplitScreen(!splitScreen);
   }
 
   const toggleOverlay = () => {
@@ -78,49 +83,52 @@ export default function App() {
   return (
     <LinearGradient style={styles.container} colors={['#151721', '#370055']} start={{ x: 0, y: 0 }} end={{ x: 2, y: 2 }}>
       {/* MAIN APP */}
-      <View style={styles.overlay}/>
-      <StatusBar barStyle="light-content" backgroundColor={'#151721'} />
-      <View style={styles.settingbuttonContainer} zIndex={10} >
-        <TouchableOpacity onPress={() => {toggleOverlay(); if (count != 0) {setLastScore(count)}; setCount(0); reset();}}>
-          <Button icon="gear" backgroundColor="#fff" size={35}/>
-        </TouchableOpacity>
+      <View isVisible={false} style={[styles.container, width=0, height=0]}>
+        <View style={styles.overlay}/>
+        <StatusBar barStyle="light-content" backgroundColor={'#151721'} />
+        <View style={styles.settingbuttonContainer} zIndex={10} >
+          <TouchableOpacity onPress={() => {toggleOverlay(); if (count != 0) {setLastScore(count)}; setCount(0); reset();}}>
+            <Button icon="gear" backgroundColor="#fff" size={35}/>
+          </TouchableOpacity>
+        </View>
+        <Image
+          style={{ width: 350, height: 100, left: -30, marginTop: 30 }}
+          source={require('./assets/logoTap.png')}
+        />
+        <View style={styles.scoreContainer}>
+          <Text style={styles.highScore}>High Score: </Text>
+          <Text style={styles.score}>{maxScore}</Text>
+        </View>
+        <View style={styles.timerContainer}>
+          <Text style={styles.timer}>{`${mins}:${secs}`}</Text>
+          <Text style={styles.timer}>s</Text>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.roundButton}
+            onPress={() => {
+              toggle();
+            }}>
+            <Text style={styles.buttonText}>Tap!</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.scoreContainer}>
+          <Text style={styles.actualScore}>Actual Score: </Text>
+          <Text style={styles.actualScore}>{count}</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              if (count != 0) {setLastScore(count)};
+              setCount(0);
+              reset();
+            }}>
+            <Button icon="rotate-left" backgroundColor="#fff" size={50} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <Image
-        style={{ width: 350, height: 100, left: -30, marginTop: 30 }}
-        source={require('./assets/logoTap.png')}
-      />
-      <View style={styles.scoreContainer}>
-        <Text style={styles.highScore}>High Score: </Text>
-        <Text style={styles.score}>{maxScore}</Text>
-      </View>
-      <View style={styles.timerContainer}>
-        <Text style={styles.timer}>{`${mins}:${secs}`}</Text>
-        <Text style={styles.timer}>s</Text>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.roundButton}
-          onPress={() => {
-            toggle();
-          }}>
-          <Text style={styles.buttonText}>Tap!</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.scoreContainer}>
-        <Text style={styles.actualScore}>Actual Score: </Text>
-        <Text style={styles.actualScore}>{count}</Text>
-      </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            if (count != 0) {setLastScore(count)};
-            setCount(0);
-            reset();
-          }}>
-          <Button icon="rotate-left" backgroundColor="#fff" size={50} />
-        </TouchableOpacity>
-      </View>
-      
+      {/* Split Screen Mode */}
+
       {/* SETTINGS */}
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.settingsContainer}>
         <View style={styles.headerOverlayContainer}>
@@ -158,7 +166,7 @@ export default function App() {
         </View>
         <Divider/>
         <View style={styles.splitScreenContainer}>
-          <TouchableOpacity style={styles.splitScreenButton} onPress={() => {toggleOverlay();}}>
+          <TouchableOpacity style={styles.splitScreenButton} onPress={() => {toggleMode(); toggleOverlay();}}>
             <Image style={styles.splitScreenButtonItem} source={require('./assets/split-screen.png')}/>
             <Text style={styles.timerText}>Split Screen</Text>
           </TouchableOpacity>
@@ -183,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 15,
     position: 'absolute',
-    right: 20,
+    right: 5,
     top: 30,
     zIndex: 10,
     width: 45,

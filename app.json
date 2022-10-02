@@ -22,8 +22,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#370055"
+        "foregroundImage": "./assets/adaptive-icon2.png",
+        "backgroundColor": "#361C66"
       },
       "package": "com.divanny.taptap"
     },
