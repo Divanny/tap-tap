@@ -22,6 +22,7 @@ const getRemaining = (time) => {
 
 export default function App() {
   const [count, setCount] = useState(0);
+	const [count2, setCount2] = useState(0);
   const [lastScore, setLastScore] = useState(0);
   const [maxScore, setMaxScore] = useState(0);
   const [remainingSecs, setRemainingSecs] = useState(15);
@@ -29,7 +30,7 @@ export default function App() {
   const [isActive, setIsActive] = useState(0);
   const { mins, secs } = getRemaining(remainingSecs);
   const [visible, setVisible] = useState(false);
-  const [splitScreen, setSplitScreen] = useState(false);
+  const [splitScreen, setSplitScreen] = useState(true);
 
   const toggle = () => {
     if (isActive == false) {
@@ -37,6 +38,7 @@ export default function App() {
     }
     if (remainingSecs != 0) {
       setCount(count + 10);
+			setCount2(count2 + 10);
     }
   }
 
@@ -83,7 +85,7 @@ export default function App() {
   return (
     <LinearGradient style={styles.container} colors={['#151721', '#370055']} start={{ x: 0, y: 0 }} end={{ x: 2, y: 2 }}>
       {/* MAIN APP */}
-      <View isVisible={false} style={[styles.container, width=0, height=0]}>
+      <View style={splitScreen ? styles.container : styles.containerNoVisible}>
         <View style={styles.overlay}/>
         <StatusBar barStyle="light-content" backgroundColor={'#151721'} />
         <View style={styles.settingbuttonContainer} zIndex={10} >
@@ -133,7 +135,7 @@ export default function App() {
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay} style={styles.settingsContainer}>
         <View style={styles.headerOverlayContainer}>
           <Text style={styles.settingsTitle}>Settings</Text>
-          <TouchableOpacity style={styles.timerButton} onPress={() => {toggleOverlay(); setLastScore(count); setCount(0); reset();}}>
+          <TouchableOpacity style={styles.timerButton} onPress={() => {toggleOverlay(); setLastScore(count); setCount(0); setCount2(0); reset();}}>
             <Image style={{ width: 20, height: 20 }} source={require('./assets/close.png')}/>
           </TouchableOpacity>
         </View>
@@ -166,14 +168,92 @@ export default function App() {
         </View>
         <Divider/>
         <View style={styles.splitScreenContainer}>
-          <TouchableOpacity style={styles.splitScreenButton} onPress={() => {toggleMode(); toggleOverlay();}}>
+          <TouchableOpacity style={styles.splitScreenButton} onPress={() => {toggleMode(); toggleOverlay(); reset();}}>
             <Image style={styles.splitScreenButtonItem} source={require('./assets/split-screen.png')}/>
             <Text style={styles.timerText}>Split Screen</Text>
           </TouchableOpacity>
         </View>
       </Overlay>
-
+								
       {/* SPLIT SCREEN */}
+      <View style={!splitScreen ? styles.container : styles.containerNoVisible}>
+				<View style={styles.firstPlayerContainer}>
+					<View style={styles.timerContainer}>
+						<Text style={styles.timer}>{`${mins}:${secs}`}</Text>
+						<Text style={styles.timer}>s</Text>
+					</View>
+					<View>
+						<TouchableOpacity
+							style={styles.roundButton2}
+							onPress={() => {
+								if (remainingSecs != 0) {
+									setCount(count + 10);
+								}
+							}}>
+							<Text style={styles.buttonText}>Tap!</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.scoreContainer}>
+						<Text style={styles.actualScore}>Actual Score: </Text>
+						<Text style={styles.actualScore}>{count}</Text>
+        	</View>
+				</View>
+				<View style={styles.optionsSplitScreen}>
+					<View style={styles.settingbuttonContainer2}>
+						<TouchableOpacity zIndex='5' onPress={() => {toggleOverlay(); 
+								if (count != 0 || count2 != 0) {
+									if (count > count2) {
+										setLastScore(count)
+									} else {setLastScore(count2)};
+									setCount(0);
+									setCount2(0);
+									reset();
+								}}}>
+							<Button icon="gear" backgroundColor="#fff" size={35}/>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.line}/>
+					<View style={[styles.buttonContainer, transform= [{ rotate: '90deg'}]]}>
+						<TouchableOpacity
+							onPress={() => {
+								if (count != 0 || count2 != 0) {
+									if (count > count2) {
+										setLastScore(count)
+									} else {setLastScore(count2)};
+									setCount(0);
+									setCount2(0);
+									reset();
+								}
+							}}>
+							<Button icon="rotate-left" backgroundColor="#fff" size={50} />
+						</TouchableOpacity>
+					</View>
+				</View>
+				<View style={styles.secondPlayerContainer}>
+					<View style={styles.timerContainer}>
+						<Text style={styles.timer}>{`${mins}:${secs}`}</Text>
+						<Text style={styles.timer}>s</Text>
+					</View>
+					<View>
+						<TouchableOpacity
+							style={styles.roundButton2}
+							onPress={() => {
+								if (isActive == false) {
+									setIsActive(true);
+								}
+								if (remainingSecs != 0) {
+									setCount2(count2 + 10);
+								}
+							}}>
+							<Text style={styles.buttonText}>Tap!</Text>
+						</TouchableOpacity>
+					</View>
+					<View style={styles.scoreContainer}>
+						<Text style={styles.actualScore}>Actual Score: </Text>
+						<Text style={styles.actualScore}>{count2}</Text>
+        	</View>
+				</View>
+			</View>
     </LinearGradient>
   );
 }
@@ -183,6 +263,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  containerNoVisible: {
+    display: 'none',
   },
   settingbuttonContainer: {
     margin: 10,
@@ -370,5 +453,59 @@ const styles = StyleSheet.create({
     margin: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+	firstPlayerContainer: {
+		transform: [{ rotate: '180deg'}],
+		justifyContent: 'center',
+    alignItems: 'center',
+	},
+	secondPlayerContainer: {
+		justifyContent: 'center',
+    alignItems: 'center',
+	},
+	roundButton2: {
+    marginTop: 20,
+    width: 183,
+    height: 183,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 183,
+    backgroundColor: '#E8E8E8',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+	settingbuttonContainer2: {
+		margin: 10,
+    padding: 5,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    borderRadius: 15,
+    width: 45,
+		position: 'absolute',
+		zIndex: 10000,
+	},
+	optionsSplitScreen: {
+		width: '100%',
+		alignItems: 'center',
+    flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	line:	{
+		borderTopColor: 'white',
+    borderTopWidth: 1,
+		borderColor: 'white',
+		height: 1,
+		width: 500,
+		padding: 0,
+		marginBottom: 0,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		zIndex: 0,
+	},
 });
