@@ -48,8 +48,11 @@
 </ul><p><code>'`yarn web` -- (`expo start:web`)'</code></p><h2>Project Status</h2>
 <hr><p>In Progress. Split screen mode still on development.</p>
 <h2>Screenshots</h2>
-![Tap Tap! Home Page](https://user-images.githubusercontent.com/67510588/193438331-e0a65bc4-4317-4648-9f71-e0aa1a3c1fc7.png)
-![Tap Tap! Settings Page](https://user-images.githubusercontent.com/67510588/193438332-c936e86b-e638-47f4-bd76-1624202fae88.png)
-![Tap Tap! Split Screen Page](https://user-images.githubusercontent.com/67510588/193438333-68a292bd-d10e-43fd-80a6-1c190f2031f2.png)
-=<h2>Contact</h2>
+![Tap Tap! Home Page]
+<img target="_blank" src="https://user-images.githubusercontent.com/67510588/193438331-e0a65bc4-4317-4648-9f71-e0aa1a3c1fc7.png">
+![Tap Tap! Settings Page]
+<img target="_blank" src="https://user-images.githubusercontent.com/67510588/193438332-c936e86b-e638-47f4-bd76-1624202fae88.png">
+![Tap Tap! Split Screen Page]
+<img target="_blank" src="https://user-images.githubusercontent.com/67510588/193438333-68a292bd-d10e-43fd-80a6-1c190f2031f2.png">
+<h2>Contact</h2>
 <hr><p><span style="margin-right: 30px;"></span><a href="https://github.com/Divanny"><img target="_blank" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" style="width: 10%;"></a></p>
